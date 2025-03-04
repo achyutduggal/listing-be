@@ -131,29 +131,36 @@ const getHtmlTemplate = (data) => {
 
 // POST endpoint to receive data and update the HTML
 app.post('/update-listing', (req, res) => {
-  try {
-    const userData = req.body;
-    
-    // Generate HTML with the user data
-    const htmlContent = getHtmlTemplate(userData);
-    
-    // Write the HTML to a file in the public directory
-    fs.writeFileSync(path.join(__dirname, 'public', 'index.html'), htmlContent);
-    
-    // Send success response
-    res.json({ 
-      success: true, 
-      message: 'Property listing updated successfully',
-      url: `http://localhost:${PORT}/index.html`
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: 'Error updating property listing', 
-      error: error.message 
-    });
-  }
+    try {
+        const userData = req.body;
+        
+        // Generate HTML with user data
+        const htmlContent = getHtmlTemplate(userData);
+        
+        // Write the HTML to a file in the public directory
+        fs.writeFileSync(path.join(__dirname, 'public', 'index.html'), htmlContent);
+        
+        // Dynamically determine the host
+        const host = req.headers.host; // Gets 'listing-be-ihy4.onrender.com'
+        const protocol = req.protocol; // Gets 'https' on Render
+        
+        // Construct the correct file URL
+        const fileUrl = `${protocol}://${host}/index.html`;
+
+        res.json({ 
+            success: true, 
+            message: 'Property listing updated successfully',
+            url: fileUrl
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error updating property listing', 
+            error: error.message 
+        });
+    }
 });
+
 
 // Default route to serve the form for updating the listing
 app.get('/', (req, res) => {
