@@ -136,98 +136,133 @@ const getHtmlTemplateTwo = (data) => {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
       * {
-        margin: 0; padding: 0; box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
         font-family: 'Inter', sans-serif;
       }
+      
       body {
-        max-width: 800px;
-        margin: 0 auto;
+        font-family: 'Inter', sans-serif;
+      }
+      
+      .container {
         position: relative;
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
         overflow: hidden;
       }
-      .blob-svg {
-        position: absolute;
-        top: -200px;
-        left: -300px;
-        width: 1080px;
-        height: 549px;
-        z-index: -1; /* behind content */
-      }
-      .content-wrapper {
-        position: relative;
-        padding: 40px;
-        color: white; /* Because the blob is behind, let's assume white text */
-      }
-      .listing-title {
-        font-size: 48px;
-        font-weight: 700;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-      }
-      .highlight {
-        color: #FFE08A; /* a highlight color over the red gradient */
-      }
-      .property-info {
-        font-size: 20px;
-        margin-bottom: 2rem;
-      }
-      .contact-info {
-        font-size: 20px;
-        text-align: right;
-      }
-      .room-image {
+      
+      .property-image {
         width: 100%;
-        border-radius: 8px;
-        margin-bottom: 1rem;
+        display: block;
+      }
+      
+      .overlay-curve {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 35%;
+        overflow: hidden;
+      }
+      
+      .curve-shape {
+        position: absolute;
+        bottom: -80px;
+        left: -20px;
+        width: 110%;
+        height: 150%;
+        background: linear-gradient(90deg, #EB3349 0%, #F45C43 88.28%);
+        border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        transform: rotate(-5deg);
+      }
+      
+      .property-info {
+        position: absolute;
+        bottom: 20px;
+        left: 50px;
+        color: white;
+        z-index: 10;
+        width: 90%;
+      }
+      
+      .property-title {
+        font-size: 48px;
+        font-weight: bold;
+        line-height: 1.1;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+      }
+      
+      .property-title .highlight {
+        color: #FFE587;
+      }
+      
+      .property-details {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      
+      .property-details .separator {
+        margin: 0 15px;
+        font-size: 28px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      .contact-info {
+        position: absolute;
+        bottom: 20px;
+        right: 50px;
+        text-align: right;
+        color: white;
+        font-size: 24px;
+        z-index: 10;
+      }
+      
+      .contact-info .phone {
+        margin-bottom: 5px;
       }
     </style>
   </head>
   <body>
-    <!-- Red Blob SVG as a background element -->
-    <svg 
-      class="blob-svg"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1080 549"
-      fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M690.118 76.0187C933.996 45.5679 1247.33 -100.65 1355.57 119.97C1462.51 337.947 1138.13 477.796 975.847 658.414C758.448 900.375 639.429 1362.94 330.617 1260.73C-37.346 1138.93 -213.861 672.744 -101.322 301.879C-13.2575 11.6696 389.146 113.598 690.118 76.0187Z"
-          fill="url(#paint0_linear)"
-        />
-        <defs>
-          <linearGradient id="paint0_linear" x1="-110.429" y1="754.706" x2="1247.41" y2="533.722" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#EB3349"/>
-            <stop offset="1" stop-color="#F45C43"/>
-          </linearGradient>
-        </defs>
-    </svg>
-  
-    <div class="content-wrapper">
-      <img
-        src="${data.imageUrl || '/api/placeholder/800/450'}"
-        alt="Property View"
-        class="room-image"
-      />
-  
-      <h1 class="listing-title">
-        OVERLOOKING <span class="highlight">${data.highlight || 'GOLFCOURSE'}</span><br>
-        ${data.location || 'INDIRANAGAR'}, ${data.subLocation || 'AHEAD'}
-      </h1>
-  
-      <div class="property-info">
-        <strong>${data.beds || '1'} Bed</strong> | 
-        <strong>${data.baths || '3'} Bath</strong> |
-        <strong>${data.sqft || '1020'} sqft</strong>
+    <div class="container">
+      <img 
+        src="${data.imageUrl || '/api/placeholder/1080/720'}" 
+        alt="Property View" 
+        class="property-image"
+      >
+      
+      <div class="overlay-curve">
+        <div class="curve-shape"></div>
       </div>
-  
+      
+      <div class="property-info">
+        <h1 class="property-title">
+          OVERLOOKING <span class="highlight">${data.highlight || 'GOLFCOURSE'}</span><br>
+          ${data.location || 'INDIRANAGAR'}, ${data.subLocation || 'AHEAD'}
+        </h1>
+        
+        <div class="property-details">
+          <span>${data.beds || '1'} Bed</span>
+          <span class="separator">|</span>
+          <span>${data.baths || '3'} Bath</span>
+          <span class="separator">|</span>
+          <span>${data.sqft || '1020'} sqft</span>
+        </div>
+      </div>
+      
       <div class="contact-info">
-        <div>${data.phone || '+123 456 7890'}</div>
-        <div>${data.email || 'realtor@gmail.com'}</div>
+        <div class="phone">${data.phone || '+123 456 7890'}</div>
+        <div class="email">${data.email || 'realtor@gmail.com'}</div>
       </div>
     </div>
   </body>
   </html>`;
-};
+  };
 
 
 // -------------------------------------
